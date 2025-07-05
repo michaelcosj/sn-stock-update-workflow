@@ -7,6 +7,10 @@ compatibility_date = "2024-09-23"
 enabled = true
 head_sampling_rate = 1
 
+[site]
+bucket = ".svelte-kit/cloudflare"
+entry-point = "workers-site"
+
 [[kv_namespaces]]
 binding = "KV"
 id = "b350b68ba61a4710aa47095a8e073835"
