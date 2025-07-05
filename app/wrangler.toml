@@ -9,4 +9,4 @@ head_sampling_rate = 1
 
 [[kv_namespaces]]
 binding = "KV"
-id = "test"
+id = "KV"
