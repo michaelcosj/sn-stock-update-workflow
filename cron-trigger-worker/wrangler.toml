@@ -1,0 +1,22 @@
+name = "email-agent-cron-trigger"
+main = "index.ts"
+compatibility_date = "2025-07-04"
+
+[vars]
+SVELTEKIT_URL = "http://localhost:8788"
+CRON_SECRET = "cron-secret"
+
+[triggers]
+crons = ["0 12 * * *"]
+
+[env.production]
+name = "email-agent-cron-trigger-prod"
+main = "index.ts"
+
+[env.triggers]
+crons = ["0 12 * * *"]
+
+[env.production.vars]
+SVELTEKIT_URL = "<tbd>"
+
+
