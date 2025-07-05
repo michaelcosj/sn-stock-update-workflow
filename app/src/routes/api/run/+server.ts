@@ -19,7 +19,7 @@ export const POST: RequestHandler = async ({ platform }) => {
 		const output = await processStockLevelData(data.csv);
 		console.log("Model generated output: ", output);
 
-		await sendDataAsSlackMessage(output);
+		await sendDataAsSlackMessage(output, data.attachment.subject);
 		console.log("Sent data to slack successfully");
 
 		await store.appendToHistory(platform, {

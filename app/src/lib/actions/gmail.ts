@@ -6,6 +6,12 @@ import * as xlsx from "xlsx";
 const SUBJECT_PHRASE = "Stock-On-Hand";
 const ATTACHMENT_FILENAME = "MainchainStockOnHand";
 
+async function getPreviousDateString() {
+	const date = new Date();
+	date.setDate(date.getDate() - 1);
+	return date.toLocaleDateString();
+}
+
 async function getGmailClient() {
 	const oAuthClient = new OAuth2Client(CLIENT_ID, CLIENT_SECRET);
 	oAuthClient.setCredentials({
@@ -22,7 +28,7 @@ export async function getStockLevelDataFromEmail() {
 		const result = await client.users.messages.list({
 			userId: "me",
 			labelIds: ["INBOX"],
-			q: `from:help@heysynth.com newer_than:1d subject:"${SUBJECT_PHRASE}"`,
+			q: `from:help@heysynth.com after:"${getPreviousDateString()}" subject:"${SUBJECT_PHRASE}"`,
 			maxResults: 1,
 		});
 
@@ -40,6 +46,7 @@ export async function getStockLevelDataFromEmail() {
 
 		let attachmentMetadata: {
 			id: string;
+			subject?: string;
 			filename: string;
 			mimetype: string;
 		} | null = null;
@@ -62,10 +69,16 @@ export async function getStockLevelDataFromEmail() {
 			if (part.body?.attachmentId) {
 				console.log(`Found attachment ${part.filename}`);
 
+				const subject =
+					message.data.payload?.headers?.find(
+						(header) => header.name === "Subject",
+					)?.value ?? undefined;
+
 				attachmentMetadata = {
 					id: part.body.attachmentId,
 					mimetype: part.mimeType,
 					filename: part.filename,
+					subject,
 				};
 
 				break;
@@ -97,6 +110,7 @@ export async function getStockLevelDataFromEmail() {
 				raw: buffer,
 				filename: attachmentMetadata.filename,
 				mimetype: attachmentMetadata.mimetype,
+				subject: attachmentMetadata.subject,
 			},
 		};
 	} catch (error) {

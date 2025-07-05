@@ -7,6 +7,7 @@ interface WorkflowHistoryItem {
 		raw: Buffer<ArrayBuffer>;
 		filename: string;
 		mimetype: string;
+		subject: string | undefined;
 	};
 }
 

@@ -68,13 +68,19 @@ async function uploadSnippet(uploadUrl: string, data: Buffer) {
 	}
 }
 
-async function completeSnippetUpload(fileId: string, channelId: string) {
+async function completeSnippetUpload(
+	fileId: string,
+	channelId: string,
+	subject: string | undefined,
+) {
 	const response = await fetch(
 		"https://slack.com/api/files.completeUploadExternal",
 		{
 			method: "post",
 			body: JSON.stringify({
-				files: [{ id: fileId, title: "Sienna Naturals Stock Levels" }],
+				files: [
+					{ id: fileId, title: subject ?? "Sienna Naturals Stock Levels" },
+				],
 				channel_id: channelId,
 			}),
 			headers: {
@@ -90,7 +96,10 @@ async function completeSnippetUpload(fileId: string, channelId: string) {
 	}
 }
 
-export async function sendDataAsSlackMessage(data: StockLevelsSchemaType) {
+export async function sendDataAsSlackMessage(
+	data: StockLevelsSchemaType,
+	subject: string | undefined,
+) {
 	try {
 		const channelId = await getChannelId();
 
@@ -102,7 +111,7 @@ export async function sendDataAsSlackMessage(data: StockLevelsSchemaType) {
 
 		console.log(`Uploading snippet with fileId ${fileId}`);
 		await uploadSnippet(uploadUrl, dataBuffer);
-		await completeSnippetUpload(fileId, channelId);
+		await completeSnippetUpload(fileId, channelId, subject);
 
 		console.log("Snippet uploaded");
 	} catch (error) {
