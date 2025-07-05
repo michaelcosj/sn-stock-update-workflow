@@ -12,7 +12,9 @@
   );
 
   const totalRuns = runsSorted.length;
-  const lastRanAt = new Date(runsSorted[0].timestamp);
+  const lastRanAt = runsSorted[0]
+    ? new Date(runsSorted[0].timestamp)
+    : undefined;
 
   const handleDownload = (item: any) => {
     const blob = new Blob([item.attachment.raw], {
@@ -65,7 +67,7 @@
         </Card.Header>
         <Card.Content>
           <div class="text-2xl font-bold pb-2 min-w-xs">
-            {lastRanAt.toLocaleDateString()}
+            {lastRanAt?.toLocaleDateString() ?? "No runs yet"}
           </div>
           <p class="text-xs text-muted-foreground">
             {lastRanAt
