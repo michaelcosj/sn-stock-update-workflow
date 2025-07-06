@@ -1,5 +1,4 @@
 import { CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN } from "$env/static/private";
-import { getPreviousDateString } from "$lib/utils/date";
 import { OAuth2Client } from "google-auth-library";
 import { google } from "googleapis";
 import * as xlsx from "xlsx";
