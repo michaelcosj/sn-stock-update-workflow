@@ -1,7 +1,7 @@
 import { GEMINI_API_KEY } from "$env/static/private";
+import { StockLevelsSchema } from "$lib/types";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import z from "zod";
 
 const SYSTEM_PROMPT = `
   Extract the product and it's stock level from the csv data. 
@@ -21,22 +21,6 @@ const SYSTEM_PROMPT = `
   K-MoistureD, Scalpscrub, K-Washday, A-ScrunchDG, A-ScrunchB, K-IssaWDR, PPMask
   Untangled, Curlelix, Dewmagic, Dailyelix
 `;
-
-// use structured output to get the data
-const StockLevelsSchema = z
-	.array(
-		z
-			.object({
-				stock: z
-					.string()
-					.describe("The total stock on hand level of a product"),
-				sku: z.string().describe("The sku of the product"),
-			})
-			.describe("The stock on hand level of a sku"),
-	)
-	.describe("An array of the product skus and stock levels");
-
-export type StockLevelsSchemaType = z.infer<typeof StockLevelsSchema>;
 
 const model = new ChatGoogleGenerativeAI({
 	model: "gemini-2.5-pro",

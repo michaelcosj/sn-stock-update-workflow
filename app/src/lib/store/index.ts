@@ -1,17 +1,4 @@
-import type { StockLevelsSchemaType } from "./actions/agent";
-
-interface WorkflowHistoryItem {
-	timestamp: string;
-	output: StockLevelsSchemaType;
-	attachment: {
-		raw: Buffer<ArrayBuffer>;
-		filename: string;
-		mimetype: string;
-		subject: string | undefined;
-	};
-}
-
-type WorkflowHistory = WorkflowHistoryItem[];
+import type { WorkflowHistory, WorkflowHistoryItem } from "$lib/types";
 
 export const store = {
 	async appendToHistory(
@@ -29,7 +16,7 @@ export const store = {
 			return current;
 		}
 
-		const history = JSON.parse(historyData) as WorkflowHistory;
+		const history: WorkflowHistory = JSON.parse(historyData);
 		await platform.env.KV.put(
 			"history",
 			JSON.stringify([...history.slice(0, 29), current]),
@@ -38,12 +25,12 @@ export const store = {
 		return current;
 	},
 
-	async getHistory(platform: Readonly<App.Platform>) {
+	async getHistory(platform: Readonly<App.Platform>): Promise<WorkflowHistory> {
 		const historyData = await platform.env.KV.get("history");
 		if (!historyData) {
 			return [];
 		}
 
-		return JSON.parse(historyData) as WorkflowHistory;
+		return JSON.parse(historyData);
 	},
 };

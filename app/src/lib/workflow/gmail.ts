@@ -1,16 +1,11 @@
 import { CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN } from "$env/static/private";
+import { getPreviousDateString } from "$lib/utils/date";
 import { OAuth2Client } from "google-auth-library";
 import { google } from "googleapis";
 import * as xlsx from "xlsx";
 
-const SUBJECT_PHRASE = "Stock-On-Hand";
-const ATTACHMENT_FILENAME = "MainchainStockOnHand";
-
-async function getPreviousDateString() {
-	const date = new Date();
-	date.setDate(date.getDate() - 1);
-	return date.toLocaleDateString();
-}
+const SUBJECT = "Stock-On-Hand";
+const ATTACHMENT = "MainchainStockOnHand";
 
 async function getGmailClient() {
 	const oAuthClient = new OAuth2Client(CLIENT_ID, CLIENT_SECRET);
@@ -23,12 +18,16 @@ async function getGmailClient() {
 
 export async function getStockLevelDataFromEmail() {
 	try {
-		const client = await getGmailClient();
+		const today = new Date();
+		const yesterday = today
+			.setDate(today.getDate() - 1)
+			.toLocaleString("en-GB");
 
+		const client = await getGmailClient();
 		const result = await client.users.messages.list({
 			userId: "me",
 			labelIds: ["INBOX"],
-			q: `from:help@heysynth.com after:"${getPreviousDateString()}" subject:"${SUBJECT_PHRASE}"`,
+			q: `from:help@heysynth.com after:"${yesterday}" subject:"${SUBJECT}"`,
 			maxResults: 1,
 		});
 
@@ -52,13 +51,13 @@ export async function getStockLevelDataFromEmail() {
 		} | null = null;
 
 		for (const part of message.data.payload?.parts ?? []) {
-			// check if it is an attachment
+			// must be an attachment
 			if (!part.filename) continue;
 
-			// check if it is the stock on hand attachment file
-			if (!part.filename.match(new RegExp(ATTACHMENT_FILENAME, "i"))) continue;
+			// must be mainchain stock on hand file
+			if (!part.filename.match(new RegExp(ATTACHMENT, "i"))) continue;
 
-			// make sure it is an excel sheet
+			// must be an excel sheet
 			if (
 				part.mimeType !== "application/vnd.ms-excel" &&
 				part.mimeType !==

@@ -1,9 +1,9 @@
-import { processStockLevelData } from "$lib/actions/agent";
-import { getStockLevelDataFromEmail } from "$lib/actions/gmail";
-import { sendDataAsSlackMessage } from "$lib/actions/slack";
 import { store } from "$lib/store";
 import { error, json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
+import { getStockLevelDataFromEmail } from "$lib/workflow/gmail";
+import { processStockLevelData } from "$lib/workflow/model";
+import { sendDataAsSlackMessage } from "$lib/workflow/slack";
 
 export const POST: RequestHandler = async ({ platform, request }) => {
 	try {

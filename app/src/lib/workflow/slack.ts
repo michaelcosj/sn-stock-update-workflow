@@ -1,15 +1,5 @@
 import { SLACK_TOKEN, SLACK_USER_ID } from "$env/static/private";
-import type { StockLevelsSchemaType } from "./agent";
-
-function getCurrentFormattedDate() {
-	const date = new Date();
-
-	const year = date.getFullYear();
-	const month = (date.getMonth() + 1).toString().padStart(2, "0");
-	const day = date.getDate().toString().padStart(2, "0");
-
-	return `${year}-${month}-${day}`;
-}
+import type { StockLevelsSchemaType } from "$lib/types";
 
 async function getChannelId() {
 	const response = await fetch("https://slack.com/api/conversations.open", {
@@ -28,8 +18,13 @@ async function getChannelId() {
 }
 
 async function getFileUploadUrl(fileLength: number) {
+	const formattedDate = new Date()
+		.toLocaleDateString("en-GB")
+		.replace(/\//g, "-");
+	const fileName = `stock-on-hand_${formattedDate}.json`;
+
 	const form = new FormData();
-	form.append("filename", `stock-on-hand_${getCurrentFormattedDate()}.json`);
+	form.append("filename", fileName);
 	form.append("length", String(fileLength));
 	form.append("snippet_type", "json");
 

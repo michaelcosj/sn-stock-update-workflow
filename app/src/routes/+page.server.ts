@@ -7,8 +7,7 @@ export const load: PageServerLoad = async ({ platform }) => {
 		error(500, "No platform in environment");
 	}
 
-	const workflowHistory = await store.getHistory(platform);
 	return {
-		workflowHistory,
+		history: await store.getHistory(platform),
 	};
 };
