@@ -5,10 +5,19 @@ import { store } from "$lib/store";
 import { error, json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 
-export const POST: RequestHandler = async ({ platform }) => {
+export const POST: RequestHandler = async ({ platform, request }) => {
 	try {
 		if (!platform) {
 			error(500, "no platform for worker kv");
+		}
+
+		// check request is from our worker
+		const authHeader = request.headers.get("Authorization");
+		if (
+			!authHeader ||
+			authHeader?.split(" ").pop() !== platform.env.CRON_SECRET
+		) {
+			error(401);
 		}
 
 		const data = await getStockLevelDataFromEmail();

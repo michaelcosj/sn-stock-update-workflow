@@ -5,7 +5,7 @@ import type {
 
 export default {
 	async scheduled(
-		controller: ScheduledController,
+		_controller: ScheduledController,
 		env: { CRON_SECRET: string; SVELTEKIT_URL: string },
 		_ctx: ExecutionContext,
 	) {
