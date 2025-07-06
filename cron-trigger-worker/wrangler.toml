@@ -1,22 +1,9 @@
-name = "email-agent-cron-trigger"
+name = "sn-stock-update-workflow"
 main = "index.ts"
 compatibility_date = "2025-07-04"
 
 [vars]
-SVELTEKIT_URL = "http://localhost:8788"
-CRON_SECRET = "cron-secret"
+SVELTEKIT_URL = "https://sn-stock-update-dashboard.michaelcosj.workers.dev/"
 
 [triggers]
 crons = ["0 15 * * *"]
-
-[env.production]
-name = "email-agent-cron-trigger-prod"
-main = "index.ts"
-
-[env.triggers]
-crons = ["0 15 * * *"]
-
-[env.production.vars]
-SVELTEKIT_URL = "<tbd>"
-
-
