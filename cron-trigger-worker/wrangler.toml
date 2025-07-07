@@ -3,7 +3,7 @@ main = "index.ts"
 compatibility_date = "2025-07-04"
 
 [vars]
-SVELTEKIT_URL = "https://sn-stock-update-dashboard.michaelcosj.workers.dev/"
+SVELTEKIT_URL = "https://sn-stock-update-dashboard.michaelcosj.workers.dev"
 
 [triggers]
 crons = ["0 15 * * *"]
