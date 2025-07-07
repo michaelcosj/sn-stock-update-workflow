@@ -1,9 +1,9 @@
-name = "sn-stock-update-workflow"
+name = "sn-stock-update-trigger"
 main = "index.ts"
 compatibility_date = "2025-07-04"
 
 [vars]
-SVELTEKIT_URL = "https://sn-stock-update-dashboard.michaelcosj.workers.dev"
+WORKFLOW_URL = "https://sn-stock-update-dashboard.michaelcosj.workers.dev"
 
 [observability]
 enabled = true
@@ -11,3 +11,7 @@ head_sampling_rate = 1
 
 [triggers]
 crons = ["0 15 * * *"]
+
+[[services]]
+binding = "WORKFLOW"
+service = "sn-stock-update-workflow"
