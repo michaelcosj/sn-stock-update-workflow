@@ -16,7 +16,7 @@ export const POST: RequestHandler = async ({ platform, request }) => {
 		!authHeader ||
 		authHeader?.split(" ").pop() !== platform.env.CRON_SECRET
 	) {
-		error(401);
+		error(401, "You shall not pass!");
 	}
 
 	const data = await getStockLevelDataFromEmail();
