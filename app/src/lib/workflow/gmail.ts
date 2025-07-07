@@ -1,6 +1,6 @@
 import { CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN } from "$env/static/private";
 import { OAuth2Client } from "google-auth-library";
-import { google } from "googleapis";
+import { google, youtubeAnalytics_v1 } from "googleapis";
 import * as xlsx from "xlsx";
 
 const SUBJECT = "Stock-On-Hand";
@@ -17,16 +17,11 @@ async function getGmailClient() {
 
 export async function getStockLevelDataFromEmail() {
 	try {
-		const today = new Date();
-		const yesterday = today
-			.setDate(today.getDate() - 1)
-			.toLocaleString("en-GB");
-
 		const client = await getGmailClient();
 		const result = await client.users.messages.list({
 			userId: "me",
 			labelIds: ["INBOX"],
-			q: `from:help@heysynth.com after:"${yesterday}" subject:"${SUBJECT}"`,
+			q: `from:help@heysynth.com newer_than:1d subject:"${SUBJECT}"`,
 			maxResults: 1,
 		});
 
