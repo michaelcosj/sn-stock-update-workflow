@@ -3,14 +3,14 @@ main = "index.ts"
 compatibility_date = "2025-07-04"
 
 [vars]
-WORKFLOW_URL = "https://sn-stock-update-dashboard.michaelcosj.workers.dev"
+WORKFLOW_URL = "https://sn-stock-update-workflow.michaelcosj.workers.dev"
 
 [observability]
 enabled = true
 head_sampling_rate = 1
 
 [triggers]
-crons = ["0 15 * * *"]
+crons = ["0 14 * * *"]
 
 [[services]]
 binding = "WORKFLOW"
