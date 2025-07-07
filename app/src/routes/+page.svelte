@@ -6,11 +6,13 @@
   let { data }: PageProps = $props();
 
   const runs = data.history.sort(
-    (a, b) => Number(b.timestamp) - Number(a.timestamp),
+    (a, b) => Number(a.timestamp) - Number(b.timestamp),
   );
 
   const totalRuns = runs.length;
-  const lastRanAt = runs[0] ? new Date(runs[0].timestamp) : undefined;
+  const lastRanAt = runs[runs.length - 1]
+    ? new Date(runs[runs.length - 1].timestamp)
+    : undefined;
 </script>
 
 <div class="p-4 md:p-8">
