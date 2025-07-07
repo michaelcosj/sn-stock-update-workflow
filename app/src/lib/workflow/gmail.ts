@@ -1,6 +1,6 @@
 import { CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN } from "$env/static/private";
 import { OAuth2Client } from "google-auth-library";
-import { google, youtubeAnalytics_v1 } from "googleapis";
+import { google } from "googleapis";
 import * as xlsx from "xlsx";
 
 const SUBJECT = "Stock-On-Hand";
