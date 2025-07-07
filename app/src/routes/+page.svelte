@@ -29,7 +29,7 @@
   <div>
     <h4 class="scroll-m-20 text-xl font-semibold tracking-tight">History</h4>
     <div class="flex flex-col gap-4 py-4">
-      {#each runs.reverse() as run, index}
+      {#each runs as run, index}
         <WorkflowRunCard {run} id={totalRuns - index} />
       {:else}
         <div class="w-full min-h-50 flex justify-center items-center">
