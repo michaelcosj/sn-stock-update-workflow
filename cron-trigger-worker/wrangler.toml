@@ -5,5 +5,9 @@ compatibility_date = "2025-07-04"
 [vars]
 SVELTEKIT_URL = "https://sn-stock-update-dashboard.michaelcosj.workers.dev"
 
+[observability]
+enabled = true
+head_sampling_rate = 1
+
 [triggers]
 crons = ["0 15 * * *"]
